@@ -1,0 +1,56 @@
+// base color
+$blue:#324157;
+$light-blue:#3A71A8;
+$red:#C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow:#FEC171;
+$panGreen: #30B08F;
+
+// sidebar
+$menuText:#c1c6c8;
+$menuActiveText: #c1c6c8;
+$subMenuActiveText: #fff; // https://github.com/ElemeFE/element/issues/12951
+
+$menuBg:#1e222d;
+$menuHover: #263445;
+
+$subMenuBg:#151822;
+$subMenuHover:#263445;
+$subMenuActiveBg: #006eff;
+
+:root {
+  --dialog-title-fontsize: 18px;
+  --form-item-label-fontsize: 14px;
+  --link-fontsize: 14px;
+  --table-cell-lineheight: 21px;
+  --table-cell-fontsize: 14px;
+  --navbar-height: 50px;
+  --app-container-padding: 20px;
+  --slidebar-width: 210px;
+  --message-box-width: 420px;
+}
+
+$dialogTitleFontSize: var(--dialog-title-fontsize, 18px);
+$formItemLabelFontSize: var(--form-item-label-fontsize, 14px);
+$linkFontSize: var(--link-fontsize, 14px);
+$tableCellLineHeight: var(--table-cell-lineheight, 21px);
+$tableCellFontSize: var(--table-cell-fontsize, 14px);
+$navbarHeight: var(--navbar-height, 50px);
+$appContainerPadding: var(--app-container-padding, 20px);
+$sideBarWidth: var(--slidebar-width, 210px);
+$messageBoxWidth: var(--message-box-width, 420px);
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+}

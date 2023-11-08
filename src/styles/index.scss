@@ -1,0 +1,381 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './btn.scss';
+@import './json-viewer.scss';
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+.padding-content {
+  padding: 4px 0;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.pr-5 {
+  padding-right: 5px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.block {
+  display: block;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.inlineBlock {
+  display: block;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+aside {
+  background: #eef1f6;
+  padding: 8px 24px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  display: block;
+  line-height: 32px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: #2c3e50;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  a {
+    color: #337ab7;
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(32, 160, 255);
+    }
+  }
+}
+
+//main-container全局样式
+.app-container {
+  padding: $appContainerPadding;
+}
+
+.components-container {
+  margin: 30px 50px;
+  position: relative;
+}
+
+.text-center {
+  text-align: center
+}
+
+.sub-navbar {
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+  transition: 600ms ease position;
+  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+
+  .subtitle {
+    font-size: 20px;
+    color: #fff;
+  }
+
+  &.draft {
+    background: #d0d0d0;
+  }
+
+  &.deleted {
+    background: #d0d0d0;
+  }
+}
+
+.link-type,
+.link-type:focus {
+  color: #337ab7;
+  cursor: pointer;
+
+  &:hover {
+    color: rgb(32, 160, 255);
+  }
+}
+
+.filter-container {
+  padding-bottom: 10px;
+  display: flex;
+  flex-flow: row nowrap;
+
+  .filter-container-left {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 80%;
+
+    .filter-input {
+      display: inline-block;
+      width: 360px;
+    }
+  }
+
+  .filter-data-status {
+    margin-right: 8px;
+  }
+
+  .filter-container-right {
+    width: 20%;
+    display: inline-block;
+    text-align: right;
+  }
+
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+  }
+}
+
+//refine vue-multiselect plugin
+.multiselect {
+  line-height: 16px;
+}
+
+.multiselect--active {
+  z-index: 1000 !important;
+}
+
+/*
+ * 修改默认样式
+ */
+.head-panel {
+  margin: -10px -5px 0 0 !important;
+  padding: 10px 0 10px 0;
+  width: 250px !important;
+  border-radius: 0;
+  border: none;
+  background-color: #1e222d;
+  color: #c1c6c8;
+}
+
+.menu-splitline {
+  display: block;
+  height: 1px;
+  margin: 8px 0;
+  background-color: #262f3e;
+}
+
+.head-menu {
+  border-right: none;
+}
+
+.head-menu .el-menu-item {
+  height: 32px;
+  line-height: 32px;
+}
+
+.head-menu .el-menu-item:hover {
+  background-color: #344258 !important;
+}
+
+.el-message-box {
+  width: $messageBoxWidth;
+}
+
+.el-message-box__title {
+  font-size: $dialogTitleFontSize;
+}
+
+.el-message-box__content {
+  font-size: $tableCellFontSize;
+}
+
+.el-message-box__message p {
+  line-height: $tableCellLineHeight;
+}
+
+.el-dialog__title {
+  font-size: $dialogTitleFontSize;
+}
+
+.el-form-item__label {
+  font-size: $formItemLabelFontSize;
+}
+
+.el-link {
+  font-size: $linkFontSize;
+}
+
+.el-table .cell {
+  line-height: $tableCellLineHeight;
+}
+
+.vxe-table--render-default .vxe-body--column {
+  line-height: $tableCellLineHeight !important;
+}
+
+.vxe-table--render-default .vxe-cell {
+  font-size: $tableCellFontSize;
+}
+
+.el-select-dropdown__item {
+  font-size: $formItemLabelFontSize;
+}
+
+.simple-colorpicker {
+  height: 16px;
+
+  .el-color-picker__trigger {
+    padding: 4px 4px 4px 1px;
+    border: none !important;
+
+    .el-color-picker__color {
+      border-color: #C0C4CC;
+      border-radius: 3px;
+
+      .el-color-picker__color-inner {
+        border-radius: 2px;
+      }
+    }
+
+    .el-icon-arrow-down::before {
+      content: '';
+    }
+  }
+}
+
+.non-edit-input {
+	background: #f9f9f9;
+	padding: 0 15px;
+}
+
+.table-row-highlight-color {
+  td {
+    background: #2a86ff !important;
+    color: white;
+  }
+}
+
+.dialog-title-customized {
+  margin: 0 0 3px 0;
+  font-size: 11pt;
+  color: #515151;
+}
+
+.log-detail-container {
+  margin: 0 auto;
+  width: 600px;
+}
+
+.log-detail-row {
+  margin: 10px 0;
+  line-height: 18px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+}
+
+.log-detail-lab {
+  width: 80px;
+  font-weight: 600;
+}
+
+.log-detail-value {
+  max-width: 520px;
+}
+
+.el-loading-mask {
+  background-color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.question-tooltip {
+  margin: 0 2px 0 0;
+  color: #989898;
+}
+
+.el-table {
+  border-radius: 3px;
+}
+
+.el-table th.el-table__cell {
+  background-color: #f8f8f8;
+  color: #787878;
+}
+
+.vxe-table .vxe-header--column {
+  background-color: #f8f8f8;
+  color: #787878;
+}
+
+.font-size-mini {
+  font-size: 12px !important;
+}
+
+.font-size-small {
+  font-size: 14px !important;
+}

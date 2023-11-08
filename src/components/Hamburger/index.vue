@@ -1,0 +1,93 @@
+<template>
+  <div :key="forceRefresh" :class="_getDivPaddingClass()" @click="toggleClick">
+    <svg
+      :class="_getSvgSizeClass()"
+      class="hamburger"
+      viewBox="0 0 1024 1024"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path fill="#c1c6c8" d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 0 0 0-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0 0 14.4 7z" />
+    </svg>
+  </div>
+</template>
+
+<script>
+import { getSize } from '../../utils/globalsize'
+
+export default {
+  name: 'Hamburger',
+  props: {
+    isActive: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      forceRefresh: this.$store.getters.size
+    }
+  },
+  watch: {
+    $route(route) {
+      this.forceRefresh = this.$store.getters.size;
+    }
+  },
+  methods: {
+    _getDivPaddingClass() {
+      return 'hamburger-container-' + getSize();
+    },
+    _getSvgSizeClass() {
+      let result = '';
+      if (this.isActive) {
+        result += 'is-active';
+      }
+      result += (' hamburger-' + getSize());
+      return result;
+    },
+    toggleClick() {
+      this.$emit('toggleClick')
+    }
+  }
+}
+</script>
+
+<style scoped>
+.hamburger-container-default,
+.hamburger-container-medium {
+  padding: 0 15px;
+}
+
+.hamburger-container-small {
+  padding: 1px 8px 0 8px;
+}
+
+.hamburger-container-mini {
+  padding: 1px 4px 0 4px;
+}
+
+.hamburger {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.hamburger-default,
+.hamburger-medium {
+  width: 20px;
+  height: 20px;
+}
+
+.hamburger-small {
+  width: 18px;
+  height: 18px;
+
+}
+
+.hamburger-mini {
+  width: 16px;
+  height: 16px;
+}
+
+.hamburger.is-active {
+  transform: rotate(180deg);
+}
+</style>

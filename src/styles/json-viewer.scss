@@ -1,0 +1,80 @@
+.json-viewer-response-theme {
+    background: #fff;
+    white-space: nowrap;
+    color: #525252;
+    font-size: 14px;
+    font-family: Consolas, Menlo, Courier, monospace;
+}
+
+.json-viewer-response-theme .jv-ellipsis {
+    color: #999;
+    background-color: #eee;
+    display: inline-block;
+    line-height: 0.9;
+    font-size: 0.9em;
+    padding: 0px 4px 2px 4px;
+    border-radius: 3px;
+    vertical-align: 2px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.json-viewer-response-theme .jv-button {
+    color: #49b3ff
+}
+
+.json-viewer-response-theme .jv-key {
+    color: #111111;
+    margin-right: 4px;
+}
+
+.json-viewer-response-theme .jv-item.jv-array {
+    color: #111111
+}
+
+.json-viewer-response-theme .jv-item.jv-boolean {
+    color: #fc1e70
+}
+
+.json-viewer-response-theme .jv-item.jv-function {
+    color: #067bca
+}
+
+.json-viewer-response-theme .jv-item.jv-number {
+    color: #fc1e70
+}
+
+.json-viewer-response-theme .jv-item.jv-number-float {
+    color: #fc1e70
+}
+
+.json-viewer-response-theme .jv-item.jv-number-integer {
+    color: #fc1e70
+}
+
+.json-viewer-response-theme .jv-item.jv-object {
+    color: #111111
+}
+
+.json-viewer-response-theme .jv-item.jv-undefined {
+    color: #e08331
+}
+
+.json-viewer-response-theme .jv-item.jv-string {
+  color: #42b983;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.json-viewer-response-theme .jv-code {
+    padding: 0 !important;
+}
+
+.json-viewer-response-theme .jv-code .jv-item.jv-boolean:before {
+    padding: 0px 2px;
+    border-radius: 2px;
+}
+
+.json-viewer-response-theme .jv-code .jv-toggle:hover:before {
+    background: #eee;
+}
