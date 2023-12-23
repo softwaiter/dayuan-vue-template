@@ -14,9 +14,9 @@ export function getSize() {
 export function getSizeFontClass() {
     const currSize = getSize();
     if (currSize == 'small') {
-      return 'font-size-small'
+      return 'font-size-small';
     } else if (currSize == 'mini') {
-      return 'font-size-mini'
+      return 'font-size-mini';
     }
     return '';
 }

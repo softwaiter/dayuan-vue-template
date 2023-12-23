@@ -379,3 +379,13 @@ aside {
 .font-size-small {
   font-size: 14px !important;
 }
+
+.password-input-suffix {
+  margin: 0 12px 0 0;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

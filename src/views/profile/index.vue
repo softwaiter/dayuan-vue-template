@@ -4,6 +4,20 @@
         class="app-container"
         style="display: flex; flex-direction: column; align-items: center; margin: 10vh 50px 0 0;"
     >
+        <div style="width: 400px;">
+            <el-upload
+                class="avatar-uploader"
+                :action="avatarUploadUrl"
+                :show-file-list="false"
+                :with-credentials="true"
+                :headers="uploadHeaders"
+                :on-success="refreshAvatar"
+            >
+                <img v-if="avatarData" :src="avatarData" class="avatar">
+                <img v-else :src="avatar" class="avatar">
+            </el-upload>
+        </div>
+
         <el-form
             :model="profile"
             label-position="right"
@@ -213,11 +227,14 @@
 </template>
 
 <script>
+import store from '@/store'
+import { getToken } from '@/utils/auth'
+import { mapGetters } from 'vuex'
 import { getUserDetail } from "@/api/user";
 import moment from 'moment';
 import { getSmsCode } from "@/api/sms"
-import { bindPhone, getBindEmailVerifycode, bindEmail, showWechatQRCode, getBindWechatState } from "@/api/account"
-import { Message } from 'element-ui'
+import { getUploadAvatarUrl, getAvatar, bindPhone, getBindEmailVerifycode, bindEmail, showWechatQRCode, getBindWechatState } from "@/api/account"
+import { MessageBox, Message } from 'element-ui'
 import DayuanCaptcha from 'dayuan-captcha'
 import elDragDialog from "@/directive/el-drag-dialog"; // base on element-ui
 
@@ -232,6 +249,7 @@ export default {
     data() {
         return {
             loading: false,
+            avatarData: null,
             profile: {
                 Id: null,
                 Code: null,
@@ -294,6 +312,25 @@ export default {
         }
     },
     computed: {
+        ...mapGetters([
+            'avatar'
+        ]),
+        avatarUploadUrl() {
+            return getUploadAvatarUrl();
+        },
+        uploadHeaders() {
+            const headers = {
+                'Platform': defaultSettings.platform,
+                'Product': defaultSettings.product
+            }
+
+            const token = getToken();
+            if (token) {
+                headers['Authorization'] = token
+            }
+
+            return headers;
+        },
         showBindWechat() {
             return defaultSettings.showBindWechatInProfile;
         }
@@ -330,8 +367,65 @@ export default {
             );
             return expires == '9999-12-31' ? '永久有效' : expires;
         },
+        refreshAvatar(res) {
+            if (res.code == 0) {
+                this.loading = true;
+                Message({
+                    message: '头像上传成功！',
+                    type: 'success',
+                    duration: 5 * 1000
+                });
+
+                getAvatar()
+                    .then(res => {
+                        if (res.code == 0) {
+                            this.avatarData = res.data;
+                            this.$store.dispatch('user/setAvatar', res.data)
+                        }
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    })
+            } else {
+                Message({
+                    message: res.error,
+                    type: 'error',
+                    duration: 5 * 1000
+                })
+
+                if (res.code === 1001 || res.code === 1002 ||
+                    res.code === 1003 || res.code === 2001) {
+                    setTimeout(() => {
+                        // to re-login
+                        MessageBox.confirm('　　当前账户即将退出登录状态，可能是您长时间未进行操作登录状态过期或其他原因；您可以选择取消留在当前页面或重新登录进入系统。', '退出提示', {
+                            confirmButtonText: '重新登录',
+                            cancelButtonText: '取消',
+                            type: 'confirm'
+                        }).then(() => {
+                            store.dispatch('user/resetToken').then(() => {
+                                location.reload()
+                            })
+                        })
+                    }, 50);
+                }
+            }
+        },
         loadData() {
+            let num = 2;
             this.loading = true;
+
+            getAvatar()
+                .then(res => {
+                    if (res.code == 0) {
+                        this.avatarData = res.data;
+                    }
+                })
+                .finally(() => {
+                    num--;
+                    if (num == 0) {
+                        this.loading = false;
+                    }
+                })
 
             const id = this.$store.getters.userid;
             getUserDetail(id)
@@ -341,7 +435,10 @@ export default {
                     }
                 })
                 .finally(() => {
-                    this.loading = false;
+                    num--;
+                    if (num == 0) {
+                        this.loading = false;
+                    }
                 })
         },
         onCaptchaError(error) {
@@ -592,6 +689,34 @@ export default {
 </script>
 
 <style scope>
+.avatar-uploader .el-upload {
+    margin: 0 0 15px 30px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
 .action-item .el-form-item__content span {
     line-height: normal;
     margin: -3px 0 0 0;

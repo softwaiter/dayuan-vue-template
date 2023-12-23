@@ -24,6 +24,9 @@ const mutations = {
     SET_NAME: (state, name) => {
         state.name = name
     },
+    SET_AVATAR: (state, avatar) => {
+        state.avatar = avatar
+    },
     SET_ROLES: (state, roles) => {
         state.roles = roles
     },
@@ -47,6 +50,10 @@ const actions = {
             commit('SET_ORGCODE', '')
             commit('SET_ORGNAME', '')
         }
+    },
+
+    setAvatar({ commit }, avatar) {
+        commit('SET_AVATAR', avatar)
     },
 
     setRoles({ commit }, roles) {

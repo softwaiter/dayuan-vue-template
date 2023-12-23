@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function getUploadAvatarUrl() {
+  return process.env.VUE_APP_BASE_API + '/account/avatar/upload';
+}
+
+export function getAvatar() {
+  return request.get('/account/avatar');
+}
+
 export function bindPhone(data, verifycode) {
     return request({
       url: '/account/bind/phone',

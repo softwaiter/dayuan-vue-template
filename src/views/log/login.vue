@@ -193,8 +193,10 @@ export default {
 				return "手机短信";
 			} else if (mode == 2) {
 				return "SIGN签名";
-			} else if (mode == 1) {
+			} else if (mode == 3) {
 				return "微信";
+			} else if (mode == 4) {
+				return "微信手机号";
 			}
 			return "其他";
 		},

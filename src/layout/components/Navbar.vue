@@ -70,8 +70,11 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
+import { getAvatar } from "@/api/account"
 import { logout } from '@/api/login'
 import { getSize, getSizeFontClass } from '../../utils/globalsize'
+import { isNullOrWhiteSpace } from '../../utils/util'
+import defaultHeadImg from '@/assets/head/default.svg'
 
 export default {
   components: {
@@ -98,7 +101,22 @@ export default {
       this.forceRefresh = this.$store.getters.size;
     }
   },
+  mounted() {
+    this._refreshAvatar();
+  },
   methods: {
+    _refreshAvatar() {
+      getAvatar()
+        .then(res => {
+          if (res.code == 0) {
+            if (!isNullOrWhiteSpace(res.data)) {
+              this.$store.dispatch('user/setAvatar', res.data)
+            } else {
+              this.$store.dispatch('user/setAvatar', defaultHeadImg)
+            }
+          }
+        })
+    },
     _getAccountNameFontClass() {
       return "account-name-label-" + getSize();
     },
@@ -165,7 +183,7 @@ export default {
         .user-avatar {
           width: 32px;
           height: 32px;
-          border-radius: 10px;
+          border-radius: 16px;
         }
       }
     }
