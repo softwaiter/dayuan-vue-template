@@ -34,7 +34,7 @@ import Layout from '@/layout'
  *
  * tree  user   lock    edit    peoples search  star    message excel   setting documentation   people  theme   list
  */
-export const constantRoutes = [
+ const myConstantRoutes = [
     {
         path: '/redirect',
         component: Layout,
@@ -128,7 +128,7 @@ export const constantRoutes = [
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [
+ const myAsyncRoutes = [
     {
         path: '/log',
         component: Layout,
@@ -233,6 +233,29 @@ export const asyncRoutes = [
     // 404 page must be placed at the end !!!
     { path: '*', redirect: '/404', hidden: true }
 ]
+
+const loadModulesRouters = () => {
+    const modulesRouters = require.context('@/submodules', true, /\/router\.js$/)
+    modulesRouters.keys().forEach(key => {
+        const imported = modulesRouters(key).default || modulesRouters(key)
+
+        myConstantRoutes.push(...imported.constantRoutes);
+
+        imported.asyncRoutes.forEach(routeItem => {
+            if (typeof routeItem.position != 'undefined' &&
+                routeItem.position >= 0 &&
+                routeItem.position < myAsyncRoutes.length) {
+                myAsyncRoutes.splice(routeItem.position, 0, routeItem)
+            } else {
+                myAsyncRoutes.push(routeItem)
+            }
+        })
+    })
+}
+loadModulesRouters();
+
+export const constantRoutes = myConstantRoutes;
+export const asyncRoutes = myAsyncRoutes;
 
 const createRouter = () => new Router({
     // mode: 'history', // require service support

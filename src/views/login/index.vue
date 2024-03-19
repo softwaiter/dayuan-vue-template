@@ -715,7 +715,6 @@ export default {
     height: 16px;
 }
 
-
 .login-container-small .login-panel {
     width: 320px;
 }
