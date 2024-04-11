@@ -1,25 +1,37 @@
 <template>
 	<div class="login-page">
-        <div :class="_getLoginContainerClass()" class="login-container">
-            <div class="left-area" :class="{ 'el-hidden': hiddenLeftArea }">
-                <div class="left-area-title">
-                    <img src="@/assets/logo/dayuan_mini_white.png" class="left-area-title-logo">
-                    <div style="margin: 0 0 0 15px;">
-                        <div class="left-area-title-main" style="color: #f1f1f1;">大圆技术</div>
-                        <div class="left-area-title-sub" style="color: #f1f1f1;">dayuan.tech</div>
-                    </div>
-                </div>
-                <div class="slogan">
-                    致力于为广大开发者提供高效、快速、全面的开发框架
-                </div>
-                <img src="@/assets/signin_images/coding.png" width="70%" style="opacity: 0.6;">
+        <div class="login-container">
+            <div class="left-area">
+                <el-carousel arrow="never" height="400px">
+                    <el-carousel-item>
+                        <div class="carousel-item-container">
+                            <img src="@/assets/login/box.svg" width="70%">
+                            <span class="title">开箱即用</span>
+                            <span class="subtitle">功能齐全、逻辑完整，下载即可运行</span>
+                        </div>
+                    </el-carousel-item>
+                    <el-carousel-item>
+                        <div class="carousel-item-container">
+                            <img src="@/assets/login/beautiful.svg" width="70%">
+                            <span class="title">美观大方</span>
+                            <span class="subtitle">布局大气、配色高端，支持自定义</span>
+                        </div>
+                    </el-carousel-item>
+                    <el-carousel-item>
+                        <div class="carousel-item-container">
+                            <img src="@/assets/login/easy.svg" width="70%">
+                            <span class="title">易学易用</span>
+                            <span class="subtitle">教程清晰、配置简单，新人轻松上手</span>
+                        </div>
+                    </el-carousel-item>
+                </el-carousel>
             </div>
-            <div class="right-area" :class="{ 'right-area-only': hiddenLeftArea }">
+            <div class="right-area">
                 <div class="right-area-title">
                     <img src="@/assets/logo/dayuan_mini.png" class="right-area-title-logo">
                     <div style="margin: 0 0 0 15px;">
                         <div class="right-area-title-main" style="color: #2F3950;">欢迎登录</div>
-                        <div class="right-area-title-sub" style="color: #687089;">大圆Admin前端快速开发模板</div>
+                        <div class="right-area-title-sub" style="color: #687089;">大圆Admin前端开发框架</div>
                     </div>
                 </div>
 
@@ -74,7 +86,9 @@
                             maxlength="6"
                             :disabled="loading"
                             class="verifycode-input"
-                            :class="verifycodeInputFocused() ? 'is-focus' : ''"
+                            :class="mobileLoginForm.verifycodeInputFocused ? 'is-focus' : ''"
+                            @focus="mobileLoginForm.verifycodeInputFocused = true"
+                            @blur="mobileLoginForm.verifycodeInputFocused = false"
                             @keyup.enter.native="handleLogin"
                         >
                             <template slot="append">
@@ -93,7 +107,7 @@
                     </el-col>
                     <el-col :span="12" style="text-align: right;">
                         <el-link v-if="loginType == 0" type="primary" :underline="false" :class="_getLoginFormLabelFontClass()" @click="loginType = 1">
-                            手机验证码登录
+                            验证码登录
                         </el-link>
                         <el-link v-if="loginType == 1" type="primary" :underline="false" :class="_getLoginFormLabelFontClass()" @click="loginType = 0">
                             账户密码登录
@@ -118,7 +132,7 @@
                     </el-col>
                     <el-col :span="12" style="text-align: right;">
                         <span :class="_getLoginFormLabelFontClass()" class="label-default">还没有账号？</span>
-                        <el-link type="primary" :underline="false" :href="'/#/getpass'" :class="_getLoginFormLabelFontClass()">
+                        <el-link type="primary" :underline="false" :href="'/#/register'" :class="_getLoginFormLabelFontClass()">
                             去注册
                         </el-link>
                     </el-col>
@@ -151,7 +165,7 @@ import { login, loginByMobile } from "@/api/login";
 import { getSmsCode } from "@/api/sms"
 import { setToken } from '@/utils/auth'
 import DayuanCaptcha from 'dayuan-captcha'
-import { getSize, getSizeFontClass } from '../../utils/globalsize'
+import { getSizeFontClass } from '../../utils/globalsize'
 import { Message } from 'element-ui'
 
 import 'dayuan-captcha/lib/dayuan-captcha.css'
@@ -163,13 +177,11 @@ export default {
     components: { DayuanCaptcha },
 	data() {
 		return {
-            screenWidth: 0,
-            hiddenLeftArea: false,
             loginType: 0, // 0: 密码登录，1: 手机验证码
             passwordInputType: 'password',
 			passLoginForm: {
-				username: "admin",
-				password: "Admin123"
+				username: null,
+				password: null
 			},
 			passLoginRules: {
 				username: [
@@ -186,7 +198,8 @@ export default {
                 countdownRound: 1,
                 currSecond: 60,
                 mobile: "",
-                verifycode: ""
+                verifycode: "",
+                verifycodeInputFocused: false
             },
             mobileLoginRules: {
                 mobile: [
@@ -216,53 +229,21 @@ export default {
 				}
 			},
 			immediate: true
-		},
-        screenWidth: {
-            handler: function(value) {
-                const size = getSize();
-                if (size == "mini") {
-                    this.hiddenLeftArea = value < 820;
-                } else if (size == "small") {
-                    this.hiddenLeftArea = value < 880;
-                } else {
-                    this.hiddenLeftArea = value < 970;
-                }
-            }
-        }
+		}
 	},
 	mounted() {
-        this.screenWidth = document.body.clientWidth;
-        this.hiddenLeftArea = this.screenWidth <= window.screen.width * 0.95;
-        window.addEventListener('resize', this._windowResize);
-
 		if (this.passLoginForm.username === "") {
 			this.$refs.username.focus();
 		} else if (this.passLoginForm.password === "") {
 			this.$refs.password.focus();
 		}
 	},
-    destroyed() {
-        window.removeEventListener('resize', this._windowResize);
-    },
 	methods: {
-        _windowResize() {
-            this.screenWidth = document.body.clientWidth;
-        },
         _getDayuanCaptchaRequestHeaders() {
             return {
                 "Platform": defaultSettings.platform,
                 "Product": defaultSettings.product
             }
-        },
-        _getLoginContainerClass() {
-            let result = 'login-container-' + getSize();
-            if (this.hiddenLeftArea) {
-                result += ' login-container-only-right';
-            }
-            return result;
-        },
-        _getLoginFormWidthClass() {
-            return 'login-form-' + getSize();
         },
         _getLoginFormLabelFontClass() {
             return getSizeFontClass();
@@ -272,12 +253,6 @@ export default {
         },
         _getCaptchaUrl() {
             return (window.RELEASE_APP_BASE_URL || process.env.VUE_APP_BASE_API) + '/captcha';
-        },
-        verifycodeInputFocused() {
-            if (this.$refs && this.$refs.verifycode) {
-                return this.$refs.verifycode.focused;
-            }
-            return false;
         },
         getBackgroundName() {
             const ord = Math.floor(Math.random() * 10000) % defaultSettings.loginBackground.randomCount + 1;
@@ -443,21 +418,9 @@ export default {
     align-items: center;
     height: 100vh;
     background-color: #f7f8fa;
-}
-
-.el-hidden {
-    display: none !important;
-}
-
-.login-container-only-right {
-    max-width: 35%;
-    min-width: 420px !important;
-}
-
-.right-area-only {
-    width: 100% !important;
-    border-top-left-radius: 11px;
-    border-bottom-left-radius: 11px;
+    background: url('~@/assets/login/default.png');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .login-form {
@@ -480,366 +443,105 @@ export default {
     color: #AAB0C4;
 }
 
-.login-container-default,
-.login-container-medium {
+.login-container {
     display: flex;
     flex-flow: row nowrap;
-    width: 75%;
-    height: 80%;
-    min-height: 465px;
-    min-width: 920px;
-    border-radius: 11px;
+    width: 720px;
+    height: 400px;
+    border-radius: 5px;
     box-shadow: 0px 0px 7px #d6d7d8;
 }
 
-.login-container-default .left-area,
-.login-container-medium .left-area {
+.login-container .left-area {
+    height: 100%;
+    width: 50%;
+    border-top-left-radius: 11px;
+    border-bottom-left-radius: 11px;
+    background-color: #ebebeb;
+}
+
+.login-container .left-area .carousel-item-container {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
     height: 100%;
-    width: 55%;
-    border-top-left-radius: 11px;
-    border-bottom-left-radius: 11px;
-    background-color: #2a86ff;
 }
 
-.login-container-default .left-area .left-area-title,
-.login-container-medium .left-area .left-area-title {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    margin: 50px 0 0 0;
-    width: 70%;
-}
-
-.login-container-default .left-area .left-area-title .left-area-title-logo,
-.login-container-medium .left-area .left-area-title .left-area-title-logo {
-    width: 60px;
-    opacity: 0.75;
-}
-
-.login-container-default .left-area .left-area-title .left-area-title-main,
-.login-container-medium .left-area .left-area-title .left-area-title-main {
-    font-size: 26px;
-}
-
-.login-container-default .left-area .left-area-title .left-area-title-sub,
-.login-container-medium .left-area .left-area-title .left-area-title-sub {
+.login-container .left-area .carousel-item-container .title {
+    margin: 25px 0 0 0;
     font-size: 19px;
+    font-weight: bold;
+    color: #515151;
 }
 
-.login-container-default .left-area .slogan,
-.login-container-medium .left-area .slogan {
-    margin: 15px 0 0 0;
-    width: 70%;
-    color: #dfdfdf;
-    font-size: 14.5px;
-}
-
-.login-container-default .right-area,
-.login-container-medium .right-area {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 45%;
-    border-top-right-radius: 11px;
-    border-bottom-right-radius: 11px;
-    background: white;
-}
-
-.login-container-default .right-area .right-area-title,
-.login-container-medium .right-area .right-area-title {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    margin: 0 0 50px 0;
-    width: 365px;
-}
-
-.login-container-default .right-area .right-area-title .right-area-title-logo,
-.login-container-medium .right-area .right-area-title .right-area-title-logo {
-    width: 66px;
-}
-
-.login-container-default .right-area .right-area-title .right-area-title-main,
-.login-container-medium .right-area .right-area-title .right-area-title-main {
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 39px;
-}
-
-.login-container-default .right-area .right-area-title .right-area-title-sub,
-.login-container-medium .right-area .right-area-title .right-area-title-sub {
+.login-container .left-area .carousel-item-container .subtitle {
+    margin: 10px 0 0 0;
     font-size: 14px;
-    line-height: 21px;
+    color: #666666;
 }
 
-.login-container-default .right-area .login-form,
-.login-container-medium .right-area .login-form {
-    width: 365px;
-}
-
-.login-container-default .right-area .login-form .el-input__inner,
-.login-container-medium .right-area .login-form .el-input__inner {
-    height: 42.5px !important;
-    line-height: 42.5px !important;
-    border-radius: 0;
-    border-top-width: 0;
-    border-right-width: 0;
-    border-left-width: 0;
-    font-size: 15.5px;
-}
-
-.login-container-default .right-area .login-form .eye-size,
-.login-container-medium .right-area .login-form .eye-size {
-    width: 17px;
-    height: 17px;
-}
-
-.login-container-default .right-area .login-panel,
-.login-container-medium .right-area .login-panel {
-    width: 360px;
-}
-
-.login-container-default .right-area .login-button,
-.login-container-medium .right-area .login-button {
-    width: 360px;
-    height: 56px;
-    margin: 25px 0 15px 0;
-    font-size: 18px;
-}
-
-.login-container-small {
-    display: flex;
-    flex-flow: row nowrap;
-    width: 70%;
-    height: 75%;
-    min-height: 430px;
-    min-width: 850px;
-    border-radius: 11px;
-    box-shadow: 0px 0px 7px #d6d7d8;
-}
-
-.login-container-small .left-area {
+.login-container .right-area {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
     height: 100%;
-    width: 55%;
-    border-top-left-radius: 11px;
-    border-bottom-left-radius: 11px;
-    background-color: #2a86ff;
-}
-
-.login-container-small .left-area .left-area-title {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    margin: 50px 0 0 0;
-    width: 70%;
-}
-
-.login-container-small .left-area .left-area-title .left-area-title-logo {
-    width: 57px;
-    opacity: 0.75;
-}
-
-.login-container-small .left-area .left-area-title .left-area-title-main {
-    font-size: 24px;
-}
-
-.login-container-small .left-area .left-area-title .left-area-title-sub {
-    font-size: 17px;
-}
-
-.login-container-small .left-area .slogan {
-    margin: 15px 0 0 0;
-    width: 70%;
-    color: #dfdfdf;
-    font-size: 13.5px;
-}
-
-.login-container-small .right-area {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 45%;
+    width: 50%;
     border-top-right-radius: 11px;
     border-bottom-right-radius: 11px;
     background: white;
 }
 
-.login-container-small .right-area .right-area-title {
+.login-container .right-area .right-area-title {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    margin: 0 0 50px 0;
+    margin: 0 0 35px 0;
     width: 320px;
 }
 
-.login-container-small .right-area .right-area-title .right-area-title-logo {
-    width: 63px;
+.login-container .right-area .right-area-title .right-area-title-logo {
+    width: 61px;
+    height: 61px;
 }
 
-.login-container-small .right-area .right-area-title .right-area-title-main {
+.login-container .right-area .right-area-title .right-area-title-main {
     font-size: 25px;
     font-weight: 500;
     line-height: 39px;
 }
 
-.login-container-small .right-area .right-area-title .right-area-title-sub {
+.login-container .right-area .right-area-title .right-area-title-sub {
     font-size: 13px;
     line-height: 21px;
 }
 
-.login-container-small .right-area .login-form {
-    width: 320px;
+.login-container .right-area .login-form {
+    width: 270px;
 }
 
-.login-container-small .login-form .el-input__inner {
+.login-container .login-form .el-input__inner {
     border-radius: 0;
     border-top-width: 0;
     border-right-width: 0;
     border-left-width: 0;
 }
 
-.login-container-small .right-area .login-form .eye-size {
+.login-container .right-area .login-form .eye-size {
     width: 16px;
     height: 16px;
 }
 
-.login-container-small .login-panel {
-    width: 320px;
+.login-container .login-panel {
+    width: 270px;
 }
 
-.login-container-small .login-button {
-    width: 320px;
-    height: 47px;
+.login-container .login-button {
+    width: 270px;
+    height: 41px;
     margin: 25px 0 15px 0;
     font-size: 17px;
-}
-
-.login-container-mini {
-    display: flex;
-    flex-flow: row nowrap;
-    width: 65%;
-    height: 70%;
-    min-height: 400px;
-    min-width: 780px;
-    border-radius: 11px;
-    box-shadow: 0px 0px 7px #d6d7d8;
-}
-
-.login-container-mini .left-area {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 55%;
-    border-top-left-radius: 11px;
-    border-bottom-left-radius: 11px;
-    background-color: #2a86ff;
-}
-
-.login-container-mini .left-area .left-area-title {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    margin: 50px 0 0 0;
-    width: 70%;
-}
-
-.login-container-mini .left-area .left-area-title .left-area-title-logo {
-    width: 52px;
-    opacity: 0.75;
-}
-
-.login-container-mini .left-area .left-area-title .left-area-title-main {
-    font-size: 22px;
-}
-
-.login-container-mini .left-area .left-area-title .left-area-title-sub {
-    font-size: 15px;
-}
-
-.login-container-mini .left-area .slogan {
-    margin: 15px 0 0 0;
-    width: 70%;
-    color: #dfdfdf;
-    font-size: 12.5px;
-}
-
-.login-container-mini .right-area {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 45%;
-    border-top-right-radius: 11px;
-    border-bottom-right-radius: 11px;
-    background: white;
-}
-
-.login-container-mini .right-area .right-area-title {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    margin: 0 0 50px 0;
-    width: 295px;
-}
-
-.login-container-mini .right-area .right-area-title .right-area-title-logo {
-    width: 60px;
-}
-
-.login-container-mini .right-area .right-area-title .right-area-title-main {
-    font-size: 23px;
-    font-weight: 500;
-    line-height: 39px;
-}
-
-.login-container-mini .right-area .right-area-title .right-area-title-sub {
-    font-size: 12px;
-    line-height: 21px;
-}
-
-.login-container-mini .right-area .login-form {
-    width: 295px;
-}
-
-.login-container-mini .right-area .login-form .el-input__inner {
-    height: 27px !important;
-    line-height: 27px !important;
-    border-radius: 0;
-    border-top-width: 0;
-    border-right-width: 0;
-    border-left-width: 0;
-    font-size: 13px;
-}
-
-.login-container-mini .right-area .login-form .eye-size {
-    width: 16px;
-    height: 16px;
-}
-
-.login-container-mini .login-panel {
-    width: 295px;
-}
-
-.login-container-mini .login-button {
-    width: 295px;
-    height: 40px;
-    margin: 20px 0 10px 0;
-    font-size: 15px;
 }
 
 .verifycode-input .el-input__inner {
@@ -854,8 +556,24 @@ export default {
     border-radius: 0;
 }
 
+.verifycode-input:hover .el-input__inner {
+    border-color: #bfc4cd;
+}
+
+.verifycode-input:hover .el-input-group__append {
+    border-color: #bfc4cd;
+}
+
+.el-form-item.is-error .verifycode-input .el-input__inner {
+    border-color: #ff4949 !important;
+}
+
 .el-form-item.is-error .verifycode-input .el-input-group__append {
     border-color: #ff4949;
+}
+
+.verifycode-input.is-focus .el-input__inner {
+    border-color: #1890ff !important;
 }
 
 .verifycode-input.is-focus .el-input-group__append {

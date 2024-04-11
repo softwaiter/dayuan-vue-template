@@ -42,7 +42,7 @@ export default {
         getWelcome() {
             const hour = new Date().getHours();
             if (hour >= 23) {
-                return '深夜了，请早点休息，注意身体！';
+                return '深夜了，请早点休息，保重身体！';
             } else if (hour >= 19) {
                 return '晚上好，欢迎回来！';
             } else if (hour >= 13) {
@@ -54,7 +54,7 @@ export default {
             } else if (hour >= 5) {
                 return '早上好，欢迎回来！';
             } else {
-                return '深夜了，请早点休息，注意身体！';
+                return '深夜了，请早点休息，保重身体！';
             }
         }
     }
@@ -83,6 +83,6 @@ export default {
     text-shadow: 1px 0px 1px #efeff0, 1px 0px 1px #efeff0, 1px 0px 1px #888d95,1px 0px 1px #888d95;
     color: #5b626d;
     font-weight: 700;
-    font-size: 80px;
+    font-size: 77px;
 }
 </style>

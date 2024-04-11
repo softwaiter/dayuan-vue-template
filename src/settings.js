@@ -1,6 +1,6 @@
 module.exports = {
-  title: '大圆Admin前端开发模板（VUE版）',
-  shortTitle: '前端开发模板（VUE）',
+  title: '大圆Admin前端开发框架（VUE版）',
+  shortTitle: '前端开发框架（VUE）',
 
   /**
    * @type {boolean} true | false
