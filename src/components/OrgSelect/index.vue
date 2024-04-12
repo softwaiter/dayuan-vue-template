@@ -7,6 +7,7 @@
         :placeholder="placeholder"
         :remote-method="searchOrgs"
         :loading="selectOrgs.loading"
+        :disabled="disabled"
         @focus="queryOrgs"
         @change="valueChanged"
     >
@@ -31,6 +32,10 @@ export default {
             type: String,
             default: null
         },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
         placeholder: {
             type: String,
             default: '请选择所属机构'
@@ -43,6 +48,23 @@ export default {
 				loading: false,
 				list: []
 			}
+        }
+    },
+    watch: {
+        value: {
+            handler: function(newVal, oldVal) {
+                if (newVal != null && newVal.length > 0) {
+                    if (newVal != oldVal) {
+                        this.searchOrgs(newVal)
+                            .then(() => {
+                                this.selectedOrg = newVal;
+                            })
+                    }
+                } else {
+                    this.selectedOrg = null;
+                }
+            },
+            immediate: false
         }
     },
     mounted() {
