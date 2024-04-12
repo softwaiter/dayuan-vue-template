@@ -58,8 +58,6 @@ module.exports = {
 
   platform: 'web',
 
-  service: 'dayuan_service',
-
   /**
    * 开发时应修改成对应产品编码
    */

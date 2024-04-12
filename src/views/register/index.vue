@@ -77,7 +77,7 @@
 
 <script>
 import { getSmsCode } from "@/api/sms"
-// import { registerSaaS } from "@/api/saas"
+import { register } from "@/api/account"
 import { setToken } from '@/utils/auth'
 import DayuanCaptcha from 'dayuan-captcha'
 import { Message } from 'element-ui'
@@ -210,7 +210,7 @@ export default {
                         org: this.form.org,
                         mobile: this.form.mobile
                     }
-                    registerSaaS(data, this.form.verifycode)
+                    register(data, this.form.verifycode)
                         .then(res => {
                             if (res.code == 0) {
                                 Message.success("注册成功！")

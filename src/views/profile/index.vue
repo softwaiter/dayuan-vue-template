@@ -98,8 +98,10 @@
                         ref="smscode"
                         v-model="phoneDialog.form.data.code"
                         placeholder="请输入验证码"
-                        class="verifycode-input"
-                        :class="smscodeInputFocused() ? 'is-focus' : ''"
+                        class="profile-verifycode"
+                        :class="phoneDialog.form.smscodeInputFocused ? 'is-focus' : ''"
+                        @focus="phoneDialog.form.smscodeInputFocused = true"
+                        @blur="phoneDialog.form.smscodeInputFocused = false"
 					>
                         <template slot="append">
                             <el-link v-show="!phoneDialog.form.countdowning" :underline="false" @click="getSmsCode()">发送验证码</el-link>
@@ -170,8 +172,10 @@
                         ref="emailcode"
                         v-model="emailDialog.form.data.code"
                         placeholder="请输入验证码"
-                        class="verifycode-input"
-                        :class="emailcodeInputFocused() ? 'is-focus' : ''"
+                        class="profile-verifycode"
+                        :class="emailDialog.form.emailcodeInputFocused ? 'is-focus' : ''"
+                        @focus="emailDialog.form.emailcodeInputFocused = true"
+                        @blur="emailDialog.form.emailcodeInputFocused = false"
 					>
                         <template slot="append">
                             <el-link v-show="!emailDialog.form.countdowning" :underline="false" @click="getEmailVerifyCode()">发送验证码</el-link>
@@ -221,7 +225,7 @@
             @open="$dialogReposition($refs['dlgBindWechat'])"
             @opened="$dialogReposition($refs['dlgBindWechat'])"
 		>
-            <div id="wechatQRCode" />
+            <div id="wechatQRCode" style="height: 400px;" />
         </el-dialog>
     </div>
 </template>
@@ -266,6 +270,7 @@ export default {
                     countdowning: false,
                     countdownRound: 1,
                     currSecond: 60,
+                    smscodeInputFocused: false,
                     data: {
                         mobile: null,
                         code: null
@@ -291,6 +296,7 @@ export default {
                     countdowning: false,
                     countdownRound: 1,
                     currSecond: 60,
+                    emailcodeInputFocused: false,
                     data: {
                         email: null,
                         code: null
@@ -452,12 +458,6 @@ export default {
                 duration: 5 * 1000
             })
         },
-        smscodeInputFocused() {
-            if (this.$refs && this.$refs.smscode) {
-                return this.$refs.smscode.focused;
-            }
-            return false;
-        },
         resetPhoneDialogForm() {
             this.phoneDialog.form.data.mobile = null;
             this.phoneDialog.form.data.code = null;
@@ -552,12 +552,6 @@ export default {
                         })
                 }
             })
-        },
-        emailcodeInputFocused() {
-            if (this.$refs && this.$refs.emailcode) {
-                return this.$refs.emailcode.focused;
-            }
-            return false;
         },
         resetEmailDialogForm() {
             this.emailDialog.form.data.email = null;
@@ -726,20 +720,36 @@ export default {
     line-height: normal;
 }
 
-.verifycode-input .el-input__inner {
+.profile-verifycode .el-input__inner {
     border-right: none;
 }
 
-.verifycode-input .el-input-group__append {
+.profile-verifycode .el-input-group__append {
     background: #fff;
     padding: 0 8px 0 0;
 }
 
-.el-form-item.is-error .verifycode-input .el-input-group__append {
+.profile-verifycode:hover .el-input__inner {
+    border-color: #bfc4cd;
+}
+
+.profile-verifycode:hover .el-input-group__append {
+    border-color: #bfc4cd;
+}
+
+.el-form-item.is-error .profile-verifycode .el-input__inner {
+    border-color: #ff4949 !important;
+}
+
+.el-form-item.is-error .profile-verifycode .el-input-group__append {
     border-color: #ff4949;
 }
 
-.verifycode-input.is-focus .el-input-group__append {
+.profile-verifycode.is-focus .el-input__inner {
+    border-color: #1890ff !important;
+}
+
+.profile-verifycode.is-focus .el-input-group__append {
     border-color: #1890ff;
 }
 </style>

@@ -135,6 +135,47 @@ import Layout from '@/layout'
  */
  const myAsyncRoutes = [
     {
+        path: '/product',
+        component: Layout,
+        alwaysShow: true,
+        redirect: 'noRedirect',
+        name: 'product-manage',
+        meta: {
+            title: '产品管理',
+            icon: 'fastapi-product',
+            roles: ['product', 'module', 'role']
+        },
+        children: [
+            {
+                path: '',
+                component: () => import('@/views/product/index'),
+                name: 'product',
+                meta: {
+                    title: '产品列表',
+                    roles: ['product']
+                }
+            },
+            {
+                path: 'module',
+                component: () => import('@/views/module/index'),
+                name: 'module',
+                meta: {
+                    title: '功能模块',
+                    roles: ['module']
+                }
+            },
+            {
+                path: 'role',
+                component: () => import('@/views/role/index'),
+                name: 'role',
+                meta: {
+                    title: '角色管理',
+                    roles: ['role']
+                }
+            }
+        ]
+    },
+    {
         path: '/log',
         component: Layout,
         alwaysShow: true,
@@ -230,6 +271,22 @@ import Layout from '@/layout'
                 meta: {
                     title: '功能访问热度',
                     roles: ['anal_module_heat']
+                }
+            }
+        ]
+    },
+    {
+        path: '/guide',
+        component: Layout,
+        alwaysShow: false,
+        children: [
+            {
+                path: '',
+                component: () => import('@/views/dashboard/index'),
+                name: 'Guide',
+                meta: {
+                    title: '框架开发指南',
+                    icon: 'guide'
                 }
             }
         ]

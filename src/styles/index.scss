@@ -243,6 +243,12 @@ aside {
   background-color: #344258 !important;
 }
 
+.el-message {
+  min-width: auto;
+  width: auto;
+  padding-right: 25px;
+}
+
 .el-message-box {
   width: $messageBoxWidth;
 }

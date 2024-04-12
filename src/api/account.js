@@ -45,3 +45,11 @@ export function showWechatQRCode(elementId) {
 export function getBindWechatState() {
   return request.get('/account/bind/wechat/state')
 }
+
+export function register(data) {
+  return request({
+    url: '/account/register',
+    method: 'post',
+    data
+  })
+}
