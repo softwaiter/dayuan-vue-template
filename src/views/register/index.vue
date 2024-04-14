@@ -10,21 +10,11 @@
             </div>
 
             <el-form ref="registerForm" :model="form" :rules="rules" class="register-form">
-                <el-form-item prop="org">
-                    <el-input
-                        ref="org"
-                        v-model="form.org"
-                        placeholder="请填写完整的企业（团队）名称"
-                        maxlength="18"
-                        clearable
-                        :disabled="loading"
-                    />
-                </el-form-item>
                 <el-form-item prop="mobile">
                     <el-input
                         ref="mobile"
                         v-model="form.mobile"
-                        placeholder="请输入常用手机号码"
+                        placeholder="请输入常用手机号码，作为登录账号"
                         maxlength="18"
                         clearable
                         :disabled="loading"
@@ -45,6 +35,44 @@
                         <template slot="append">
                             <el-link v-show="!countdowning" :underline="false" @click="getVerifyCode()">发送验证码</el-link>
                             <div v-show="countdowning">{{ currSecond }}s后可重新获取</div>
+                        </template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item prop="pass">
+                    <el-input
+                        ref="pass"
+                        v-model="form.pass"
+                        :type="passInputType"
+                        placeholder="请输入登录密码"
+                        maxlength="20"
+                        :disabled="loading"
+                    >
+                        <template slot="suffix">
+                            <div v-if="passInputType == 'password'" class="password-input-suffix" @click="passInputType = 'text'">
+                                <svg-icon icon-class="eye" style="width: 17px; height: 17px;" />
+                            </div>
+                            <div v-if="passInputType == 'text'" class="password-input-suffix" @click="passInputType = 'password'">
+                                <svg-icon icon-class="eye-open" style="width: 17px; height: 17px;" />
+                            </div>
+                        </template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item prop="pass2">
+                    <el-input
+                        ref="pass2"
+                        v-model="form.pass2"
+                        :type="pass2InputType"
+                        placeholder="请再次输入登录密码"
+                        maxlength="20"
+                        :disabled="loading"
+                    >
+                        <template slot="suffix">
+                            <div v-if="pass2InputType == 'password'" class="password-input-suffix" @click="pass2InputType = 'text'">
+                                <svg-icon icon-class="eye" style="width: 17px; height: 17px;" />
+                            </div>
+                            <div v-if="pass2InputType == 'text'" class="password-input-suffix" @click="pass2InputType = 'password'">
+                                <svg-icon icon-class="eye-open" style="width: 17px; height: 17px;" />
+                            </div>
                         </template>
                     </el-input>
                 </el-form-item>
@@ -76,6 +104,7 @@
 </template>
 
 <script>
+import md5 from 'js-md5';
 import { getSmsCode } from "@/api/sms"
 import { register } from "@/api/account"
 import { setToken } from '@/utils/auth'
@@ -90,22 +119,43 @@ export default {
 	name: "Register",
     components: { DayuanCaptcha },
 	data() {
+        const validatePass = (rule, value, callback) => {
+            if (!/[A-Z]/.test(value)) {
+                callback(new Error("密码须包含大写字母、小写字母和数字。"));
+            } else if (!/[a-z]/.test(value)) {
+                callback(new Error("密码须包含大写字母、小写字母和数字。"));
+            } else if (!/\d/.test(value)) {
+                callback(new Error("密码须包含大写字母、小写字母和数字。"));
+            } else if (value.length < 6 || value.length > 20) {
+                callback(new Error("密码长度范围必须为6~20位。"));
+            } else {
+                callback();
+            }
+        };
+
+        const validatePass2 = (rule, value, callback) => {
+            if (value != this.form.pass) {
+                callback(new Error("两次输入密码不一致。"));
+            } else {
+                callback();
+            }
+        };
+
 		return {
             loading: false,
+            passInputType: 'password',
+            pass2InputType: 'password',
             verifycodeInputFocused: false,
             countdowning: false,
             countdownRound: 1,
             currSecond: 60,
             form: {
-                org: null,
                 mobile: null,
-                verifycode: null
+                verifycode: null,
+                pass: null,
+                pass2: null
             },
             rules: {
-				org: [
-                    { required: true, message: "企业（团队）名称不能为空" },
-                    { min: 5, max: 18, message: "长度应为5~18个字符" }
-				],
 				mobile: [
                     { required: true, message: "手机号不能为空" },
                     {
@@ -115,6 +165,14 @@ export default {
 				],
                 verifycode: [
                     { required: true, message: "验证码不能为空" }
+                ],
+                pass: [
+                    { required: true, message: "请输入登录密码。" },
+                    { trigger: "blur", validator: validatePass }
+                ],
+                pass2: [
+                    { required: true, message: "请再次输入登录密码。" },
+                    { trigger: "blur", validator: validatePass2 }
                 ]
             }
         }
@@ -207,8 +265,8 @@ export default {
                     this.loading = true;
 
                     const data = {
-                        org: this.form.org,
-                        mobile: this.form.mobile
+                        mobile: this.form.mobile,
+                        pass: md5(this.form.pass)
                     }
                     register(data, this.form.verifycode)
                         .then(res => {

@@ -46,10 +46,13 @@ export function getBindWechatState() {
   return request.get('/account/bind/wechat/state')
 }
 
-export function register(data) {
+export function register(data, verifycode) {
   return request({
     url: '/account/register',
     method: 'post',
+    headers: {
+      "Sms": verifycode
+    },
     data
   })
 }
