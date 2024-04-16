@@ -1,12 +1,13 @@
 <template>
     <el-select
         v-model="selectedUser"
-        clearable
+        :clearable="clearable"
         filterable
         remote
         :placeholder="placeholder"
         :remote-method="searchUsers"
         :loading="selectUsers.loading"
+		:disabled="disabled"
         @focus="queryUsers"
         @change="valueChanged"
     >
@@ -36,6 +37,14 @@ export default {
 			type: String,
 			default: null
 		},
+        clearable: {
+            type: Boolean,
+            default: true
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
         placeholder: {
             type: String,
             default: '请选择用户'

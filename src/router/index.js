@@ -282,7 +282,7 @@ import Layout from '@/layout'
         children: [
             {
                 path: '',
-                component: () => import('@/views/dashboard/index'),
+                component: () => import('@/views/guide/index'),
                 name: 'Guide',
                 meta: {
                     title: '框架开发指南',

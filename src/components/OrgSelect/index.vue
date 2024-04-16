@@ -1,7 +1,7 @@
 <template>
     <el-select
         v-model="selectedOrg"
-        clearable
+        :clearable="clearable"
         filterable
         remote
         :placeholder="placeholder"
@@ -31,6 +31,10 @@ export default {
         value: {
             type: String,
             default: null
+        },
+        clearable: {
+            type: Boolean,
+            default: true
         },
         disabled: {
             type: Boolean,
