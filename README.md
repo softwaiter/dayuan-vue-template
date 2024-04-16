@@ -44,19 +44,19 @@
 
 &emsp;&emsp;**财务子模块案例目录结构：**
 
-&emsp;&emsp;submodules
-&emsp;&emsp;&emsp;└─ finance&emsp;// 财务子模块
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;├─ api&emsp;&emsp;// 接口目录
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;├─ goods.js	// 商品接口定义
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;└─ order.js	 // 订单接口定义
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;├─ svg&emsp;&emsp;// svg图片目录
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;└─ finance.svg	 // 财务管理图标
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;├─ views&emsp;// 页面目录
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;├─ goods    // 商品管理
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;│&emsp;&emsp;└─ index.vue	// 商品管理页面文件
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;└─ order	// 订单管理
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;&emsp;&emsp;&emsp;└─ index.vue	// 订单管理页面文件
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;└─ router.js	// 路由定义文件
+&emsp;&emsp;submodules<br/>
+&emsp;&emsp;&emsp;└─ finance&emsp;// 财务子模块<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;├─ api&emsp;&emsp;// 接口目录<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;├─ goods.js	// 商品接口定义<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;└─ order.js	 // 订单接口定义<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;├─ svg&emsp;&emsp;// svg图片目录<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;└─ finance.svg	 // 财务管理图标<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;├─ views&emsp;// 页面目录<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;├─ goods    // 商品管理<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;│&emsp;&emsp;└─ index.vue	// 商品管理页面文件<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;└─ order	// 订单管理<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;&emsp;&emsp;&emsp;└─ index.vue	// 订单管理页面文件<br/>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;└─ router.js	// 路由定义文件<br/>
 
 &emsp;&emsp;router.js文件内容只包含constantRoutes、asyncRoutes两个数组，用于定义常量路由和动态路由。
 
@@ -64,7 +64,7 @@
 
 &emsp;&emsp;**财务子模块案例路由定义：**
 
-```json
+```vue
 import Layout from '@/layout'
 
 export const constantRoutes = []
