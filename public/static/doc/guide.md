@@ -124,11 +124,11 @@ export const asyncRoutes = [
 
 ## 三、演示地址
 
-<a href="http://vue-template.dayuan.tech" target="_blank" style="text-decoration: none;">【VUE前端开发框架演示】</a>
+<a href="http://vue-template.dayuan.link" target="_blank" style="text-decoration: none;">【VUE前端开发框架演示】</a>
 
 &emsp;&emsp;项目演示既包含前端的页面布局，也包含后台接口逻辑，用户能够体验到完整真实的效果。本项目的后端接口逻辑全部调用的大圆Admin产品的接口服务，用户也可根据需要自行替换。
 
-<a href="http://demo.dayuan.tech" target="_blank" style="text-decoration: none;">【大圆Admin产品演示】</a>
+<a href="http://demo.dayuan.link" target="_blank" style="text-decoration: none;">【大圆Admin产品演示】</a>
 
 
 
