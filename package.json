@@ -16,7 +16,7 @@
     "clipboard": "2.0.4",
     "codemirror": "^5.45.0",
     "core-js": "3.6.5",
-    "dayuan-captcha": "^0.2.1",
+    "dayuan-captcha": "^0.3.0",
     "driver.js": "0.9.5",
     "echarts": "4.2.1",
     "element-ui": "^2.15.10",
